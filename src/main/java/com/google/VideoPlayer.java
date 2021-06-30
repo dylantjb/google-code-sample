@@ -1,9 +1,6 @@
 package com.google;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class VideoPlayer {
@@ -25,8 +22,7 @@ public class VideoPlayer {
 
   public void showAllVideos() {
     List<Video> videos = videoLibrary.getVideos();
-    Comparator<Video> compareByTitle = Comparator.comparing(Video::getTitle);
-    videos.sort(compareByTitle);
+    sortByTitle(videos);
 
     System.out.println("Here's a list of all available videos:");
     for (Video video : videos)
@@ -204,11 +200,70 @@ public class VideoPlayer {
   }
 
   public void searchVideos(String searchTerm) {
-    System.out.println("searchVideos needs implementation");
+    List<Video> matches = new ArrayList<>();
+    for (Video video : videoLibrary.getVideos()) {
+      String title = video.getTitle().toLowerCase();
+      if (title.contains(searchTerm.toLowerCase()))
+        matches.add(video);
+    }
+
+    if (!matches.isEmpty()) {
+      System.out.printf("Here are the results for %s:%n", searchTerm);
+      sortByTitle(matches);
+      int count = 1;
+      for (Video match : matches) {
+        System.out.printf("%d) %s (%s) [%s]%n", count, match.getTitle(), match.getVideoId(), String.join(" ", match.getTags()));
+        count++;
+      }
+
+      System.out.println("Would you like to play any of the above? If yes, specify the number of the video.");
+      System.out.println("If your answer is not a valid number, we will assume it's a no.");
+      Scanner in = new Scanner(System.in);
+
+      if (in.hasNextInt()) {
+        int choice = in.nextInt();
+        if (choice <= matches.size() && choice >= 1)
+          playVideo(matches.get(choice - 1).getVideoId());
+      }
+
+    } else
+      System.out.printf("No search results for %s%n", searchTerm);
   }
 
   public void searchVideosWithTag(String videoTag) {
-    System.out.println("searchVideosWithTag needs implementation");
+    if (videoTag.startsWith("#")) {
+      List<Video> matches = new ArrayList<>();
+      for (Video video : videoLibrary.getVideos()) {
+        for (String tag : video.getTags()) {
+          if (tag.toLowerCase().contains(videoTag.toLowerCase()))
+            matches.add(video);
+        }
+      }
+      if (!matches.isEmpty()) {
+        System.out.printf("Here are the results for %s:%n", videoTag);
+        sortByTitle(matches);
+        int count = 1;
+        for (Video match : matches) {
+          System.out.printf("%d) %s (%s) [%s]%n", count, match.getTitle(), match.getVideoId(), String.join(" ", match.getTags()));
+          count++;
+        }
+
+        System.out.println("Would you like to play any of the above? If yes, specify the number of the video.");
+        System.out.println("If your answer is not a valid number, we will assume it's a no.");
+        Scanner in = new Scanner(System.in);
+
+        if (in.hasNextInt()) {
+          int choice = in.nextInt();
+          if (choice <= matches.size() && choice >= 1)
+            playVideo(matches.get(choice - 1).getVideoId());
+        }
+
+      } else
+        System.out.printf("No search results for %s%n", videoTag);
+
+
+    } else
+      System.out.printf("No search results for %s%n", videoTag);
   }
 
   public void flagVideo(String videoId) {
@@ -221,5 +276,11 @@ public class VideoPlayer {
 
   public void allowVideo(String videoId) {
     System.out.println("allowVideo needs implementation");
+  }
+
+  // helper method(s)
+  private void sortByTitle(List<Video> videos) {
+    Comparator<Video> compareByTitle = Comparator.comparing(Video::getTitle);
+    videos.sort(compareByTitle);
   }
 }
