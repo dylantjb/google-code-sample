@@ -130,13 +130,23 @@ public class VideoPlayer {
             System.out.printf("Cannot add video to %s: Video already added%n", playlistName);
         }
       }
-    } else
+    } else {
       message = String.format("Cannot add video to %s: Playlist does not exist%n", playlistName);
+      System.out.printf("Would you like to create the playlist: %s (y/N)%n", playlistName);
+      Scanner in = new Scanner(System.in);
+      if (in.hasNext()) {
+        String choice = in.next();
+        if (choice.equalsIgnoreCase("y")) {
+          createPlaylist(playlistName);
+          addVideoToPlaylist(playlistName, videoId);
+          return;
+        }
+      }
+    }
     if (video == null && message.isEmpty())
       message = String.format("Cannot add video to %s: Video does not exist%n", playlistName);
 
     System.out.print(message);
-
   }
 
   public void showAllPlaylists() {
