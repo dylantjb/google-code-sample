@@ -3,7 +3,7 @@ Tasks implemented:
 - [x] Task 2
 - [x] Task 3
 - [x] Task 4
-- [ ] Extensions
+- [x] [Extensions](https://github.com/dylantjb/google-code-sample/tree/extras)
 
 The Java Youtube Challenge uses Java 11, Junit 5.4 and Maven.
 
