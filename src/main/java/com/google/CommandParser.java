@@ -25,6 +25,19 @@ class CommandParser {
     }
 
     switch (command.get(0).toUpperCase()) {
+      case "SHOW_CURRENT_PLAYLIST":
+        this.videoPlayer.showCurrentPlaylist();
+        break;
+      case "NEXT":
+        this.videoPlayer.nextInPlaylist();
+        break;
+      case "PLAY_PLAYLIST":
+        try {
+          this.videoPlayer.playPlaylist(command.get(1));
+        } catch (ArrayIndexOutOfBoundsException e) {
+          System.out.println("Please enter PLAY_PLAYLIST command followed by playlist");
+        }
+        break;
       case "NUMBER_OF_VIDEOS":
         this.videoPlayer.numberOfVideos();
         break;
@@ -152,7 +165,7 @@ class CommandParser {
       default:
         System.out.println(
             "Please enter a valid command, type HELP for a list of "
-            + "available commands.");
+                + "available commands.");
         break;
     }
   }
@@ -182,6 +195,9 @@ class CommandParser {
             + "    SEARCH_VIDEOS_WITH_TAG <tag_name> -Display all videos whose tags contains the provided tag.\n"
             + "    FLAG_VIDEO <video_id> <flag_reason> - Mark a video as flagged.\n"
             + "    ALLOW_VIDEO <video_id> - Removes a flag from a video.\n"
+            + "    PLAY_PLAYLIST <playlist_name> - Plays videos in a playlist.\n"
+            + "    NEXT - Plays the next video in the current playlist.\n"
+            + "    SHOW_CURRENT_PLAYLIST - Displays the playlist currently playing.\n"
             + "    HELP - Displays help.\n"
             + "    EXIT - Terminates the program execution.\n";
     System.out.println(helpText);

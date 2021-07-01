@@ -9,6 +9,7 @@ public class VideoPlayer {
   private final VideoLibrary videoLibrary;
   private Video current;
   private boolean paused;
+  private VideoPlaylist currentPlaylist;
 
   public VideoPlayer() {
     this.paused = false;
@@ -35,6 +36,8 @@ public class VideoPlayer {
         if (current != null)
           stopVideo();
         System.out.printf("Playing video: %s%n", video.getTitle());
+        if (currentPlaylist != null && !currentPlaylist.getVideos().contains(video))
+          currentPlaylist = null;
         current = video;
         paused = false;
       } else
@@ -106,6 +109,8 @@ public class VideoPlayer {
   public void createPlaylist(String playlistName) {
     if (!playlists.stream().map(VideoPlaylist::getName).map(String::toLowerCase).collect(Collectors.toList()).contains(playlistName.toLowerCase())) {
       playlists.add(new VideoPlaylist(playlistName));
+      for (VideoPlaylist playlist : playlists)
+        System.out.println(playlist.getName());
       System.out.printf("Successfully created new playlist: %s%n", playlistName);
     } else
       System.out.println("Cannot create playlist: A playlist with the same name already exists");
@@ -351,5 +356,43 @@ public class VideoPlayer {
       System.out.printf("%d) %s (%s) [%s]%n", count, video.getTitle(), video.getVideoId(), String.join(" ", video.getTags()));
       count++;
     }
+  }
+
+  // extension methods
+  public void playPlaylist(String playlistName) {
+    for (VideoPlaylist playlist : playlists) {
+      if (playlist.getName().equalsIgnoreCase(playlistName)) {
+        currentPlaylist = playlist;
+        playVideo(currentPlaylist.getVideos().get(0).getVideoId());
+        return;
+      }
+    }
+    System.out.printf("Cannot play playlist %s: Playlist does not exist", playlistName);
+  }
+
+  public void nextInPlaylist() {
+    // edit playVideo to check if the song is in the current playlist
+    if (currentPlaylist == null) {
+      System.out.println("No playlist is currently playing");
+    } else {
+      if (current != null) {
+        int currentIndex = currentPlaylist.getVideos().indexOf(current);
+        if (++currentIndex > currentPlaylist.getVideos().size() - 1)
+          currentIndex = 0;
+        playVideo(currentPlaylist.getVideos().get(currentIndex).getVideoId());
+      } else
+        System.out.println("No song is currently playing");
+    }
+  }
+
+  public void showCurrentPlaylist() {
+    if (currentPlaylist != null) {
+      int size = currentPlaylist.getVideos().size();
+      if (size == 1) {
+        System.out.printf("%s (1 video)%n", currentPlaylist.getName());
+      } else
+        System.out.printf("%s (%d videos)%n", currentPlaylist.getName(), size);
+    } else
+      System.out.println("There is no playlist currently playing");
   }
 }
