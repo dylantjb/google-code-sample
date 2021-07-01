@@ -15,31 +15,31 @@ class VideoPlaylist {
     videos = new ArrayList<>();
   }
 
-  public String getName() {
+  String getName() {
     return name;
   }
 
-  public void addVideo(Video video) {
+  void addVideo(Video video) {
     videos.add(video);
   }
 
-  public List<Video> getVideos() {
+  List<Video> getVideos() {
     return videos;
   }
 
-  public boolean contains(Video video) {
+  boolean contains(Video video) {
     return videos.contains(video);
   }
 
-  public boolean isEmpty() {
+  boolean isEmpty() {
     return videos.isEmpty();
   }
 
-  public void removeVideo(Video video) {
+  void removeVideo(Video video) {
     videos.remove(video);
   }
 
-  public void clear() {
+  void clear() {
     videos.clear();
   }
 

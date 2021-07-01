@@ -1,10 +1,8 @@
-# Youtube Challenge - Java
-
 Tasks implemented:
 - [x] Task 1
 - [x] Task 2
 - [x] Task 3
-- [ ] Task 4
+- [x] Task 4
 - [ ] Extensions
 
 The Java Youtube Challenge uses Java 11, Junit 5.4 and Maven.
