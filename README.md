@@ -5,6 +5,7 @@ Tasks implemented:
 - [x] Task 4
 - [x] Extensions
   - [x] Prompt user for playlist creation
+  - [x] Show number of videos in playlist
 
 The Java Youtube Challenge uses Java 11, Junit 5.4 and Maven.
 

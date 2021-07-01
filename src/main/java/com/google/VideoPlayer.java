@@ -154,8 +154,14 @@ public class VideoPlayer {
       Comparator<VideoPlaylist> compareByTitle = Comparator.comparing(VideoPlaylist::getName);
       playlists.sort(compareByTitle);
       System.out.println("Showing all playlists:");
-      for (VideoPlaylist playlist : playlists)
-        System.out.println(playlist.getName());
+      for (VideoPlaylist playlist : playlists) {
+        int size = playlist.getVideos().size();
+        if (size == 1) {
+          System.out.printf("%s (1 video)%n", playlist.getName());
+        } else {
+          System.out.printf("%s (%d videos)%n", playlist.getName(), size);
+        }
+      }
     } else
       System.out.println("No playlists exist yet");
   }
